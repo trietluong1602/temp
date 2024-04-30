@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Hacker News</string>
+    <string name="title"> title: %s </string>
+    <string name="score"> score: %d </string>
+    <string name="time">time: %d</string>
+    <string name="number">%d</string>
 </resources>

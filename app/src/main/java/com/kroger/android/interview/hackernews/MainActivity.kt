@@ -2,10 +2,15 @@ package com.kroger.android.interview.hackernews
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Text
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kroger.android.interview.hackernews.ui.adapter.NewsAdapter
 import com.kroger.android.interview.hackernews.databinding.ActivityMainBinding
+import com.kroger.android.interview.hackernews.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * This Activity shows the Hacker News home screen
@@ -21,19 +26,24 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var app: HackerNewsApp
+    private val viewModel: MainViewModel by viewModels()
+    private val adapter = NewsAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = application as HackerNewsApp
 
-        // Choose your path
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Or
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
 
-//        setContent {
-//            Text("Hello World")
-//        }
+        viewModel.topStories.observe(this) { stories ->
+            adapter.setItems(stories)
+        }
     }
 }
+
+
+
